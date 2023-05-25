@@ -188,3 +188,23 @@ Postman이나 자신이 만든 클라이언트로 실행을 해보면 잘 될것
 1. appsetting.json에 ip를 써야하는데 하나의 호스트내에 도커에서 도커로 접속하는 것이라 IP를 어떤것을 써야하는지 애매한데 그냥 Windows 11의 호스트 IP(사설 IP)를 입력하면 된다. 
 
 [https://learn.microsoft.com/ko-kr/dotnet/core/docker/build-container?tabs=windows](https://learn.microsoft.com/ko-kr/dotnet/core/docker/build-container?tabs=windows)
+
+
+### 비하인드 
+
+도커끼리 네트워크 통신을 하기 위해서는 네트워크를 하나 만들어서 도커 컨테이너끼리 엮어줘야 한다. 
+
+1. docker network 만들기 
+```
+docker network create --driver bridge alpine-net
+```
+
+2. 컨테이너 docker network 엮기 
+```
+sudo docker run -it -p 6379:6379 --network server-net --name RedisServer redis_server_image
+```
+
+3. 컨테이너 핑 테스트 
+```
+ping RedisServer 
+```
