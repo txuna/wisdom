@@ -21,3 +21,7 @@
 ### Netfilter Hook을 이용한 Firewall Kernel Module 제작하기   
 2023-05-31 POST    
 [Netfilter Hook을 이용한 Firewall Kernel Module 제작하기 ](https://github.com/txuna/tufirewall)  
+
+### Redis에서 Lua Script를 사용하여 Atomic하게 접근하기  
+2023-06-09 POST  
+[Redis에서 Lua Script를 사용하여 Atomic하게 접근하기](./redis_lua_script/RedisLuaScript.md)  
