@@ -103,16 +103,16 @@ ex) `SECCOMP-BPF`
 
 `BPF`의 패킷 처리과정을 간락하게 살펴보았다면 이제는 `BPF 머신`이 실제로 어떻게 구성되는지 알아볼예정이다. 
 
-`BPF머신`은 아래 4가지로 구성된다. 
-
-**Element          Description**
-
-**A                32 bit wide accumulator
-X                32 bit wide X register
-M[]             16 x 32 bit wide misc registers aka "scratch memory store", addressable from 0 to 15**
-
-**Program Counter**
-
+`BPF머신`은 아래 4가지로 구성된다.   
+  
+**Element          Description**  
+  
+**A                32 bit wide accumulator  
+X                32 bit wide X register    
+M[]             16 x 32 bit wide misc registers aka "scratch memory store", addressable from 0 to 15**  
+  
+**Program Counter**  
+  
 그리고 머신의 명령어 셋은 아래의 카테고리를 포함한다. 
 
 - **`Load Instruction`**
