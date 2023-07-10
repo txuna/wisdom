@@ -41,4 +41,8 @@
 
 ### BPF EMULATOR 만들기 
 2023-07-07 POST  
-[BPF EMULATOR 만들기](https://github.com/txuna/bpf_emulator)  
+[BPF EMULATOR 만들기](https://github.com/txuna/bpf_emulator)   
+
+### Redis EventLoop Architecture 
+2023-07-10 POST  
+[Redis EventLoop Architecture](./redis_eventloop_architecture/redis_eventLoop.md)
