@@ -38,11 +38,15 @@
 2023-06-26 POST  
 [BPF란 무엇인가](./bpf_what/BPF_WHAT.md)     
 
-
 ### BPF EMULATOR 만들기 
 2023-07-07 POST  
 [BPF EMULATOR 만들기](https://github.com/txuna/bpf_emulator)   
 
 ### Redis EventLoop Architecture 
 2023-07-10 POST  
-[Redis EventLoop Architecture](./redis_eventloop_architecture/redis_eventLoop.md)
+[Redis EventLoop Architecture](./redis_eventloop_architecture/redis_eventLoop.md)  
+
+### Nginx EventLoop Architecture
+2023-07-21 POST  
+[Nginx EventLoop Architecture](./nginx_eventloop_architecture/nginx_eventloop.md)  
+
