@@ -48,5 +48,9 @@
 
 ### Nginx EventLoop Architecture
 2023-07-21 POST  
-[Nginx EventLoop Architecture](./nginx_eventloop_architecture/nginx_eventloop.md)  
+[Nginx EventLoop Architecture](./nginx_eventloop_architecture/nginx_eventloop.md)    
 
+
+### Monster Multi Battle Game 
+2023-07-27 POST   
+[Monster Multi Battle Game](https://github.com/txuna/multi_poketmon_battle)  
