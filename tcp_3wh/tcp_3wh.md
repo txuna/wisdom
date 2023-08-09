@@ -1886,6 +1886,11 @@ out:
 
 여기까지가 `3WH`의 과정이 리눅스는 어떠한 과정을 통해 수행하는지의 요약이다.
 
-### 이미지
+### 내용 추가
+지금까지 설명을 보면 `syn backlog`라고 말하는 부분은 `ehash table`을 사용한다는 공용으로 사용한다는 것을 알 수 있다. 하지만 리눅스 커널 버전 4.3(포함)이전까지는 ehash table을 같이 사용하는 것이 아닌 각 `listener sk(struct sock *sk)`마다 `syn_table[array]`를 두고 해시배열처럼 `struct request_sock *req`를 담아서 사용했다.   
+하지만 아래 커밋추가 이후 즉, 리눅스 커널 버전 4.4(포함)이후로부터는 이전에 설명했던 부분이 포함되었다. 또한 `ehash`에 들어간 `req`를 다른 `sock`과 구별하기 위해 `TCP_NEW_SYN_RECV`라는 `TCP STATE`를 새롭게 추가했던 것으로 추정된다.  
+아래는 해당 리눅스 커널 커밋 부분이다.  
+https://github.com/torvalds/linux/commit/079096f103faca2dd87342cca6f23d4b34da8871  
 
+### 이미지
 ![im.png](./image/im.png)
