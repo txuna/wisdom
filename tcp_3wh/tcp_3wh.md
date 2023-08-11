@@ -1786,7 +1786,9 @@ switch (sk->sk_state) {
 
 여기까지의 과정이 `3WH`의 과정이다. 
 
-여담으로 `tcp`의 데이터를 유저단으로 던져줄 때에는 `slow-path`와 `fast-path`가 있는 처음에만 `tcp_data_queue`함수를 호출하여 데이터를 던져주고 그 다음부터는 `tcp_rcv_established` 함수를 사용해서 던져준다. 
+여담으로 `tcp`의 데이터를 유저단으로 던져줄 때에는 `slow-path`와 `fast-path`가 존재한다.  
+`tcp_rcv_established` 함수에서 `slow-path`의 경우 `tcp_data_queue`함수를 호출하지만 `fast-path`라면 곧바로 데이터를 큐에 넣는다.  
+해당 과정에서 대해서는 다음에 좀 더 분석예정.
 
 ### Call accept() In User Application
 
