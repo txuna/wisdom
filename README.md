@@ -58,3 +58,7 @@
 ### How 3 Way HandShake in Linux Kernel
 2023-08-08 POST  
 [How 3 Way HandShake in Linux Kernel](./tcp_3wh/tcp_3wh.md)
+
+### MySQL Connector/C++ 8.0 사용법
+2023-09-21 POST  
+[MySQL Connector/C++ 8.0 사용법](./mysql_cpp_connector8/README.md)  
