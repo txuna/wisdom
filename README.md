@@ -62,3 +62,7 @@
 ### MySQL Connector/C++ 8.0 사용법
 2023-09-21 POST  
 [MySQL Connector/C++ 8.0 사용법](./mysql_cpp_connector8/README.md)  
+
+### TicTacToe Server - C++ 
+2023-10-06 POST  
+[TicTacToe Server - C++ ](https:://github.com/txuna/tictactoe_server)
