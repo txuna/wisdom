@@ -65,4 +65,8 @@
 
 ### TicTacToe Server - C++ 
 2023-10-06 POST  
-[TicTacToe Server - C++ ](https:://github.com/txuna/tictactoe_server)
+[TicTacToe Server - C++ ](https:://github.com/txuna/tictactoe_server)   
+
+### accept(2) syscall internal logic 
+2023-10-29 POST  
+[accept(2) syscall internal logic](./accept_internal_logic/accept_internal_logic.md)  
