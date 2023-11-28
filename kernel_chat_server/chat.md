@@ -319,6 +319,7 @@ static int __server_recvmsg(struct socket *sock, char **buffer)
 
     if(ret < 0)
     {
+        /* ret값이 -104라면 클라이언트로부터 연결 중단되었다는 뜻 */
         return ret;
     }
 
