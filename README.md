@@ -76,5 +76,5 @@
 [Sockerprogramming on KernelSpace](./kernel_chat_server/chat.md)   
 
 ### EPOLL은 어떻게 동작하는가 
-2023-12-08 POST  
+2023-12-09 POST  
 [EPOLL은 어떻게 동작하는가](./iternal_epoll/index.md)  
