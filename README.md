@@ -73,4 +73,8 @@
 
 ### 커널에서 소켓프로그래밍하기
 2023-11-29 POST  
-[Sockerprogramming on KernelSpace](./kernel_chat_server/chat.md)
+[Sockerprogramming on KernelSpace](./kernel_chat_server/chat.md)   
+
+### EPOLL은 어떻게 동작하는가 
+2023-12-08 POST  
+[EPOLL은 어떻게 동작하는가](./iternal_epoll/index.md)  
