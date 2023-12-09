@@ -326,7 +326,7 @@ static inline void init_poll_funcptr(poll_table *pt, poll_queue_proc qproc)
 	pt->_key   = ~(__poll_t)0; /* all events enabled */
 }
 ```
-해당 함수포인터는 추후 모니터링하기원하는 소켓의 wait queue에 wait을 넣기 위해 호출하는 함수이다.   
+해당 함수포인터는 추후 모니터링하기를 원하는 소켓의 wait queue에 wait을 넣기 위해 호출하는 함수입니다.   
 그리고 `ep_item_poll`함수를 호출하여 모니터링하기를 원하는 소켓이 저장된 `epitem`와 소켓의 wait queue에 wait을 넣기위한 콜백함수가 저장된 필드를 인자를 함께 넘깁니다.
 `ep_item_poll`함수는 모니터링하기 원하는 소켓의 wait_queue에 탐지하기를 원하는 프로세스의 wait을 넣습니다. 그리고 `epoll_wait`함수를 호출하기전 이미 발생한 이벤트가 있는지 확인하고 있다면 reevents로 반환합니다. 
 
