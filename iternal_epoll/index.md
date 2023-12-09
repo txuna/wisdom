@@ -117,7 +117,8 @@ SYSCALL_DEFINE4(epoll_ctl, int, epfd, int, op, int, fd,
 }
 ```
 epoll_ctl함수를 호출하면 유저가 전달한 인수를 `copy_from_user`함수를 호출하여 커널공간에 선언된 `epds`변수에 값을 복사합니다. 그리고 `do_epoll_ctl`함수를 호출하여 동작을 이어나갑니다.    
-do_epoll_ctl함수는 3가지의 기능으로 분리가 된다. 값 검증 및 세팅, 폐쇄루프 검증, 본연의 목적인 추가, 수정, 삭제 기능 수행으로 나눠집니다.
+do_epoll_ctl함수는 3가지의 기능으로 분리가 됩니다.   
+값 검증 및 세팅, 폐쇄루프 검증, 본연의 목적인 추가, 수정, 삭제 기능 수행으로 나눠집니다.
 
 ```C
 int do_epoll_ctl(int epfd, int op, int fd, struct epoll_event *epds,
