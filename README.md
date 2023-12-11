@@ -1,7 +1,6 @@
 # wisdom
  잡다한 내용 정리 페이지
 
-
 ### asp.net core 7.0 배포하기   
 2023-05-20 POST    
 [asp.net core 7.0 배포하기 ](./asp_net_core_publish/asp_net_core_build.md)  
@@ -49,7 +48,6 @@
 ### Nginx EventLoop Architecture
 2023-07-21 POST  
 [Nginx EventLoop Architecture](./nginx_eventloop_architecture/nginx_eventloop.md)    
-
 
 ### Monster Multi Battle Game 
 2023-07-27 POST   
