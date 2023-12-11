@@ -5,7 +5,8 @@
 epoll이 어떤식으로 동작하는지 구글링을 통해 많은 양의 정보를 얻을 수 있으며 직감적으로 동작방식을 알 수 있습니다. 하지만 직접 커널 소스코드를 보면서 세부적으로 이해하는 것도 좋은 방법이라고 생각하기에 글을 쓰게 되었습니다.
 
 ### 주의 
-본 내용은 리눅스 커널 6.4.3 버전을 기준으로 하며 많은 양의 소스코드가 존재하여 분석에 있어 틀린 내용이 있을 수 있습니다. 그렇기에 ***재미로만 봐주시면 감사하겠습니다.***
+본 내용은 리눅스 커널 6.4.3 버전을 기준으로 하며 많은 양의 소스코드가 존재하여 분석에 있어 틀린 내용이 있을 수 있습니다.   
+그렇기에 ***재미로만 봐주시면 감사하겠습니다.***
 
 ### 본론 
 리눅스에서 제공하는 epoll 인터페이스를 사용하기 위해서는 3가지의 syscall이 존재합니다.   
@@ -28,7 +29,7 @@ SYSCALL_DEFINE1(epoll_create, int, size)
 	return do_epoll_create(0);
 }
 ```
-여기서 알 수 있듯이 size값은 무시됩니다.   
+여기서 알 수 있듯이 size값은 무시됩니다.     
 
 ***지금부터 나오는 함수들은 크기가 크기 때문에 일부분만 발췌하겠습니다***
 
@@ -303,6 +304,7 @@ struct ep_pqueue {
 2. `ffd` 필드를 통해서 파일디스크립터와 파일구조체를 저장합니다.
 3. `ep` 필드를 통해서 `epoll instance` 즉, `struct eventpoll`을 가리킵니다. 
 4. `event` 필드를 통해서 유저가 인수로 전달한 `struct epoll_event`를 저장합니다.
+5. `rdllink` 필드를 통해서 `struct eventpoll`의 `rdllist`필드와 연결합니다. 즉, 활성화된 이벤트가 있는경우 연결되는 항목입니다.
 
 
 ```C
@@ -328,7 +330,7 @@ static inline void init_poll_funcptr(poll_table *pt, poll_queue_proc qproc)
 ```
 해당 함수포인터는 추후 모니터링하기를 원하는 소켓의 wait queue에 wait을 넣기 위해 호출하는 함수입니다.   
 그리고 `ep_item_poll`함수를 호출하여 모니터링하기를 원하는 소켓이 저장된 `epitem`와 소켓의 wait queue에 wait을 넣기위한 콜백함수가 저장된 필드를 인자를 함께 넘깁니다.
-`ep_item_poll`함수는 모니터링하기 원하는 소켓의 wait_queue에 탐지하기를 원하는 프로세스의 wait을 넣습니다. 그리고 `epoll_wait`함수를 호출하기전 이미 발생한 이벤트가 있는지 확인하고 있다면 reevents로 반환합니다. 
+`ep_item_poll`함수는 모니터링하기 원하는 소켓의 wait_queue에 탐지하기를 원하는 프로세스의 wait을 넣습니다. 그리고 `epoll_wait`함수를 호출하기전 이미 발생한 이벤트가 있는지 확인하고 있다면 revents로 반환합니다. 
 
 ```C
 static __poll_t ep_item_poll(const struct epitem *epi, poll_table *pt,
@@ -397,7 +399,7 @@ __poll_t tcp_poll(struct file *file, struct socket *sock, poll_table *wait)
 [...]
 }
 ```
-해당 함수 또한 TCP_ESTABLISHED이후의 상태일때 코드가 있지만 그것은 추후 epoll_wait함수 분석 때 다시 살펴보도록 하겠습니다.  
+해당 함수 또한 TCP_ESTABLISHED이후의 상태일때 코드가 있지만 그것은 추후 epoll_wait함수 분석때 다시 살펴보도록 하겠습니다.  
 지금은 단지 sock_poll_wait함수를 호출하고 현재 소켓의 상태가 `TCP_LISTEN`상태라면 소켓의 `accept queue`에서 connection 요청된 클라이언트 소켓이 존재하는지 확인합니다. 
 이때 `accept queue`의 정의는 `TCP 3 Way Handshake`가 끝난 소켓을 의미합니다. 
 
@@ -497,10 +499,10 @@ return 0;
 ***"왜 epoll_wait에서 한번에 하면 좋은데 왜 epoll_ctl과정에서 한번 체크를 해야하나요?"***
 이에대한 답은 웹서버를 예로들 수 있습니다. 클라이언트를 accept하고 나서 클라이언 소켓을 epoll_ctl을 통해 모니터링하고자 하기전에 데이터를 주면 epoll_wait에서는 timeout 설정말고는 확인할 수 없습니다. 그 이유는 콜백함수인 `ep_poll_callback`은 해당 소켓에 변화가 감지되었을 때만 호출되기 때문입니다.   
 
-즉, 데이터를 놓지지 않기 위해 epoll_ctl하는 과정에서 확인하는 이유입니다. 
+즉, 데이터를 놓지지 않기 위해 `epoll_ctl`하는 과정에서 확인하는 이유입니다. 
 
 ### epoll_wait
-이제 마지막 syscall입니다. 지금까지는 `epoll instance`를 만들고 모니터링하기를 원하는 소켓을 원하는 이벤트와 함께 등록을 진행했습니다. 이제는 모니터링을 진행하는 로직을 수해해야 합니다.
+이제 마지막 syscall입니다. 지금까지는 `epoll instance`를 만들고 모니터링하기를 원하는 소켓을 원하는 이벤트와 함께 등록을 진행했습니다. 이제는 모니터링을 진행하는 로직을 수행해야 합니다.
 
 ```C
 /* fs/evevntpoll.c */
@@ -581,7 +583,7 @@ static inline int ep_events_available(struct eventpoll *ep)
 		READ_ONCE(ep->ovflist) != EP_UNACTIVE_PTR;
 }
 ```
-`rdllist`의 값이 empty하지 않는가 또는 rb tree가 비지않았는가 등을 검사하여 이벤트가 있는지 확인합니다. 이전에 이벤트가 발생했다면 `epi->rdllink`의 값을 `ep->rdllist`에 추가하였는것을 기억할 수 있습니다. 
+`rdllist`의 값이 empty하지 않는가 또는 rb tree가 비지않았는가 등을 검사하여 이벤트가 있는지 확인합니다. 이전에 이벤트가 발생했다면 `epi->rdllink`의 값을 `ep->rdllist`에 추가(연결)하였는것을 기억할 수 있습니다. 
 
 
 ```C
@@ -625,7 +627,7 @@ while (1) {
 
 만약 이벤트가 없어 루프가 진행된다면 해당 프로세스에대한 wait을하나 만들고 해당 프로세스의 상태를 `TASK_INTERRUPTIBLE`상태로 설정합니다. 그리고 정말 대기모드에 진입하기 전에 마지막으로 정말 이벤트가 없었는지 확인합니다. 만약 없다면 `epoll_instance`의 wait queue에 해당 프로세스의 wait을 추가합니다. 그리고 `schedule_hrtimeout_range`함수를 호출하여 지정된 시간동안 SLEEP합니다.  
 
-그리고 지정된 시간이 지났거나 누군가 강제로 꺠웠다면 `epoll instance`의 wait_queue에서 자신의 wait을 제거한다음 프로세스의 상태를 `TASK_RUNNING`상태로 설정합니다. 그리고 다시 처음 루프문을 실행합니다.   
+그리고 지정된 시간이 지났거나 누군가 강제로 깨웠다면 `epoll instance`의 wait_queue에서 자신의 wait을 제거한다음 프로세스의 상태를 `TASK_RUNNING`상태로 설정합니다. 그리고 다시 처음 루프문을 실행합니다.   
 
 여기서 지정된 시간이 아닌 누군가가 깨웠다는 전제하에 설명을 추가적으로 해보겠습니다.   
 과연 누가 대기모드에 빠진 프로세스를 깨운것일까요? 그것은 모니터링하고자 하는 소켓이 이벤트가 발생하여 wakeup된것입니다. 그럼 과정을 한번 살펴보겠습니다.
@@ -838,8 +840,10 @@ epoll 인터페이스를 사용하기 위해서는 `epoll_create`, `epoll_ctl`, 
 
 마지막으로 `epoll_wait`함수는 사용자가 지정한 타임아웃 만큼 대기모드에 빠집니다. 이때 프로세스의 상태는 `TASK_INTERRUPTIBLE`로 설정합니다. 만일 `ep_poll_callback`함수를 통해 프로세스가 `TASK_RUNNING`상태로 바꼈다면 이벤트가 발생했다는 가정하게 로직을 수행하게 됩니다. 그렇기 때문에 `spurious wakeup`이 발생하여 활성화된 이벤트 목록 갯수 0이 반환될 수 있는 것입니다. 만약 이벤트가 존재한다면 `ep_send_events`함수를 호출하여 이벤트가 활성화된 `epitem`들을 이터레이팅하여 사용자가 전달한 `struct epoll_event`구조체에 값을 기입합니다.   
 
-만약 사용자가 `Edge Trigger` 모드를 사용한다면 한번 발생한 이벤트에 대해서는 추가알림을 하지않습니다. 하지만 `Leve Trigger`모드를 사용한다면 데이터를 사용자에게 전달하고 나서 다시 활성화된 이벤트리스트에 `epitem`을 추가하게 됩니다. 즉, 데이터가 읽일때까지 무한적으로 알림을 발생시키게 됩니다. 
+만약 사용자가 `Edge Trigger` 모드를 사용한다면 한번 발생한 이벤트에 대해서는 추가알림을 하지않습니다. 하지만 `Level Trigger`모드를 사용한다면 데이터를 사용자에게 전달하고 나서 다시 활성화된 이벤트리스트에 `epitem`을 추가하게 됩니다. 즉, 데이터가 읽일때까지 무한적으로 알림을 발생시키게 됩니다. 
 
+### 업데이트
+사용자가 이벤트를 수거하기전에 같은 파일디스크립터에 이벤트가 발생하면 `ep->rdllist`에 같은 파일디스크립터가 2개이상 들어갈 수 있지않은가 의문이 들 수 있습니다. 이때는 `ep_is_linked`함수를 사용하여 이미 `ep->rdllist`에 해당 파일디스크립터가 있는지 확인합니다. 있다면 즉, 연결되어있다면 추가하지 않습니다. 
 
 ### 코멘트
 지금까지 epoll이 어떻게 만들어졌는지 어떻게 동작하는지 등을 알아보았습니다. 물론 방대한 소스코드를 부족한 실력으로 분석한것이기때문에 분명히 틀린내용이 있을 수 있습니다. 그렇기에 해당 분석글만을 기반하지않고 다른 epoll 분석글을 읽어가면서 보시는것을 추천합니다.   
