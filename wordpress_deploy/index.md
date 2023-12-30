@@ -57,7 +57,9 @@ docker-compose up -d
 즉, 도커 볼륨까지 백업하고 덮어씌우는 과정또한 배포단계에 포함되어야 합니다.  
 
 그럼 이제 다른 호스트로 배포하는 과정에 대해서 명시합니다.  
-그전에 먼저 도커 볼륨을 백업해주는 툴을 설치하여야하는데 아래 링크에서 설치하시면 됩니다. 
+그전에 먼저 도커 볼륨을 백업해주는 툴을 설치하여야하는데 아래 링크에서 설치하시면 됩니다.   
+
+
 https://github.com/junedkhatri31/docker-volume-snapshot
 
 1. 자신의 호스트에서 백업툴로 wordpress 볼륨을 백업한다.
@@ -75,12 +77,12 @@ sudo docker exec -it [container id] bash
 mysqldump -u [사용자명] -p [데이터베이스명] > [백업파일명].sql
 ```
 
-4. mysql docker내부에 있는 파일을 호스트로 가지고 옵니다. 
+4. mysql docker 내부에 있는 파일을 호스트로 가지고 옵니다. 
 ```bash
 docker cp [container id]:/[file.sql] .
 ```
 
-5. 다른 호스트로 wordpress 파일과 sql파일을 전송합니다.
+5. 다른 호스트로 wordpress 파일과 sql 파일을 전송합니다.
 ```bash
 scp [file.tar] [user]@[ip]:[path]
 scp [file.sql] [user]@[ip]:[path]
@@ -91,7 +93,7 @@ scp [file.sql] [user]@[ip]:[path]
 docker-compose up -d
 ```
 
-주의) 작업전 모든 컨테이너는 STOP 해야합니다.    
+***주의) 작업전 모든 컨테이너는 STOP 해야합니다.***    
 
 7. wordpress 파일을 볼륨에 덮어줍니다. 
 ```bash
