@@ -77,6 +77,12 @@
 2023-12-09 POST  
 [EPOLL은 어떻게 동작하는가](./iternal_epoll/index.md)  
 
+### Wordpress 도커로 관리하기 
+2023-12-30 POST  
+[Wordpress 도커로 관리하기](./wordpress_deploy/index.md)
+
 ### TCP 소켓이 데이터를 읽어내는 과정 
 작성 예정 POST  
 [TCP 소켓이 데이터를 읽어내는 과정 ](./tcp_data_processing/tcp_data_processing.md)
+
+
