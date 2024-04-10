@@ -81,6 +81,10 @@
 2023-12-30 POST  
 [Wordpress 도커로 관리하기](./wordpress_deploy/index.md)
 
+### bpftrace를 이용한 메모리 누수 확인
+2024-04-10 POST  
+[bpftrace를 이용한 메모리 누수 확인](./bpftrace_memory/README.md)  
+ 
 ### TCP 소켓이 데이터를 읽어내는 과정 
 작성 예정 POST  
 [TCP 소켓이 데이터를 읽어내는 과정 ](./tcp_data_processing/tcp_data_processing.md)
