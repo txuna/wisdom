@@ -89,6 +89,9 @@
 2024-05-24 POST  
 [쿠버네티스 pod, node 트레이싱하기](./k8s-trace/trace.md)
 
+### 1.22 go 함수 호출규약 및 bpftrace uprobe로 인자파싱하기
+2024-06-06 POST  
+[1.22 go 함수 호출규약 및 bpftrace uprobe로 인자파싱하기](./probe_go/README.md)
 ### TCP 소켓이 데이터를 읽어내는 과정 
 작성 예정 POST  
 [TCP 소켓이 데이터를 읽어내는 과정 ](./tcp_data_processing/tcp_data_processing.md)
