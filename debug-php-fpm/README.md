@@ -20,7 +20,7 @@ git clone --depth 1 --branch php-8.1.29 https://github.com/php/php-src.git
 
 cd php-src
 ./buildconf --force
-./configure --enable-debug --enable-fpm --disable-cgi --with-openssl --enable-phpdbg --enable-phpdbg-debug
+./configure --enable-debug --enable-fpm --disable-cgi --with-openssl --enable-phpdbg --enable-phpdbg-debug --enable-opcache
 ./config.nice 
 make -j $(nproc)
 make test
