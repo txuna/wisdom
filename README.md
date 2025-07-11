@@ -97,12 +97,6 @@
 2024-07-14   
 [PHP FPM의 전반적인 구조 및 동작과정](./debug-php-fpm/README.md)  
 
-### ECONNRESET or ECONNABORTED 
-작성 예정 POST
-[ECONNRESET or ECONNABORTED](./accept_error/README.md)
-
-### TCP 소켓이 데이터를 읽어내는 과정 
-작성 예정 POST  
-[TCP 소켓이 데이터를 읽어내는 과정 ](./tcp_data_processing/tcp_data_processing.md)
-
-
+### PHP Zend Memory Allocator 살펴보기
+2025-07-11
+[PHP Zend Memory Allocator 살펴보기](./php_zend_memory/README.md)  
