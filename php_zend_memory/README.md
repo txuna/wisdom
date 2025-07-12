@@ -224,6 +224,13 @@ best_len :: 최적의 길이
 조금 복잡한 알고리즘이지만 요약하면 `free_map`을 보고 요청된 `pages_count`에 최적의 공간을 찾아서 해당 주소를 반환한다고 생각하면 됩니다.
 ![alt text](image-10.png)
 
+그럼 위에서 가정한 부분을 가지고 어떤 로직을 타는지 확인해보겠습니다. 
+![alt text](image-11.png)
+> 위 가정한 청크를 기반으로 커버리지되지않는 부분은 제거했습니다. 
+
+![alt text](image-12.png)
+
+
 #### 큰 할당 
 똑같이 위 로직을 따르지만 small bins와 달리 free_slot에 저장하지 않고 주어진 size를 page크기만큼 나눠서 필요한 page_count를 지정합니다. 그리고 zend_mm_alloc_pages함수를 호출하여 페이지를 할당합니다.
 
