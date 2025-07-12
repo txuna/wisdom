@@ -221,11 +221,14 @@ pages_count :: 요청한 page 갯수
 best_len :: 최적의 길이 
 ```
 ![alt text](./page.png)
+> 오타수정 ex) 1000 1101일 때 최하위 비트부터 0이 시작하는 위치는 1입니다. 즉, page_num은 1입니다. 0아님
+
 조금 복잡한 알고리즘이지만 요약하면 `free_map`을 보고 요청된 `pages_count`에 최적의 공간을 찾아서 해당 주소를 반환한다고 생각하면 됩니다.
+
 ![alt text](image-10.png)
 
 그럼 위에서 가정한 부분을 가지고 어떤 로직을 타는지 확인해보겠습니다. 
-![alt text](image-11.png)
+![alt text](image-13.png)
 > 위 가정한 청크를 기반으로 커버리지되지않는 부분은 제거했습니다. 
 
 ![alt text](image-12.png)
