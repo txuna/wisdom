@@ -1,5 +1,5 @@
 # PHP Zend Memory Allocator 살펴보기
-PHP 개발자를 위한 메모리 관리 구조
+PHP 개발자를 위한? 메모리 관리 구조
 ## 개요
 PHP 언어로 변수 또는 [zval](https://www.phpinternalsbook.com/php5/zvals/basic_structure.html)을 할당하게 되면 내부적으로 동작하는 메모리 할당자를 통해 관리됩니다. glibc에 존재하는 `malloc`, `free`같은 것으로 생각할 수 있지만 PHP는 이를 한층 더 wrapping한 `Zend Memory Allocator`를 통해서 관리합니다. 또한 사용가능한 API는 아래와 같습니다. 
 ```C
@@ -132,7 +132,9 @@ static void alloc_globals_ctor(zend_alloc_globals *alloc_globals)
 각 bin_number은 대표하는 size가 존재하는데 아래 표와 같습니다.
 ![alt text](image-3.png)
 `bin_data_size`는 주어진 `bin_number`이 대표하는 size가 몇인지 관리하는 테이블입니다.   
-`bin_pages`는 주어진 `bin_number`이 몇개의 page를 필요로하는지 관리하는 테이블입니다.
+`bin_pages`는 주어진 `bin_number`이 몇개의 page를 필요로하는지 관리하는 테이블입니다.  
+`bin_elements`는 주어진 `bin_number`이 대표하는 size기반으로 4KB PAGE를 얼마만큼 분할해야할지 결정하는 테이블입니다. 
+> ex) 56바이트는 bin_number이 6이며 4KB PAGE를 73개로 분할할 수 있습니다. bin_elements[bin_number:6] = 73
 
 ![alt text](image-4.png)
 사용자가 56 사이즈의 메모리를 할당 요청했을 때 56이 어떤 bin_number인지 확인하고 해당 `free_slot`을 살펴보고 메모리가 있다면 반환하는 형식입니다.
@@ -220,8 +222,7 @@ pages_count :: 요청한 page 갯수
 # 이는 필요 page count가 3일 때 가장 최적의 길이는 3을 찾습니다. 없다면 그 다음 사이즈가 됩니다.
 best_len :: 최적의 길이 
 ```
-![alt text](./page.png)
-> 오타수정 ex) 1000 1101일 때 최하위 비트부터 0이 시작하는 위치는 1입니다. 즉, page_num은 1입니다. 0아님(오타)
+![alt text](./page3.png)
 
 조금 복잡한 알고리즘이지만 요약하면 `free_map`을 보고 요청된 `pages_count`에 최적의 공간을 찾아서 해당 주소를 반환한다고 생각하면 됩니다.
 
