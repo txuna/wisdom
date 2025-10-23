@@ -100,3 +100,7 @@
 ### PHP Zend Memory Allocator 살펴보기
 2025-07-11  
 [PHP Zend Memory Allocator 살펴보기](./php_zend_memory/README.md)  
+
+### Zero Copy의 미학#1(XDP 로드밸런서)
+2025-10-24  
+[Zero Copy의 미학#1(XDP 로드밸런서)](./zero_copy_1/README.md)
